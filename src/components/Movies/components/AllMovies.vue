@@ -1,20 +1,24 @@
 <script>
   import getPopularMovies from "../composables/getPopularMovies";
   import MovieCard from "../../MovieCard.vue";
-  import { onBeforeMount, onMounted } from "vue";
+  import {onBeforeMount, onMounted, watchEffect} from "vue";
   import LoadingBar from "../../LoadingBar.vue";
 
   export default {
-    props: [],
+    props: ['selectedCategory'],
     components: {
       MovieCard,
       LoadingBar,
     },
-    setup() {
-      const { popularMovies, loading, loadPopularMovies } = getPopularMovies();
+    setup(props) {
+      let { popularMovies, loading, loadPopularMovies } = getPopularMovies();
 
       onBeforeMount(() => {
-        loadPopularMovies();
+        loadPopularMovies(false, props.selectedCategory);
+      });
+
+      watchEffect(() => {
+        loadPopularMovies(true, props.selectedCategory);
       });
 
       onMounted(() => {
@@ -25,7 +29,7 @@
           if (bottomOfWindow) {
             loading.value = true;
             setTimeout(() => {
-              loadPopularMovies();
+              loadPopularMovies(false, props.selectedCategory);
             }, 500);
           }
         };
@@ -42,7 +46,7 @@
       <h2
         class="pb-6 text-lg font-semibold tracking-wider uppercase  text-myyellow"
       >
-        All Movies
+        Movies
       </h2>
       <div
         class="grid grid-cols-1 gap-8  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"

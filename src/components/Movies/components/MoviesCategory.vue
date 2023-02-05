@@ -1,23 +1,24 @@
-<script lang="ts">
-  import getGenres from "@/composables/Movies/getGenres";
-  import getPopularMovies from "@/composables/Movies/getPopularMovies";
-  import getMovieGenres from "@/composables/Movies/getMovieGenres";
-  import { defineComponent, onBeforeMount, onMounted } from "vue";
-  import LoadingBar from "../LoadingBar.vue";
-  import MovieCard from "../MovieCard.vue";
+<script>
+  import getPopularMovies from "../composables/getPopularMovies";
+  import MovieCard from "../../MovieCard.vue";
+  import {onBeforeMount, onMounted, watchEffect} from "vue";
+  import LoadingBar from "../../LoadingBar.vue";
 
-  export default defineComponent({
+  export default {
+    props: ['selectedCategory'],
     components: {
       MovieCard,
       LoadingBar,
     },
-    setup() {
+    setup(props) {
       const { popularMovies, loading, loadPopularMovies } = getPopularMovies();
-      const { genres, loadGenres } = getGenres();
 
       onBeforeMount(() => {
-        loadPopularMovies();
-        loadGenres();
+        loadPopularMovies(props.selectedCategory);
+      });
+
+      watchEffect(() => {
+        loadPopularMovies(props.selectedCategory);
       });
 
       onMounted(() => {
@@ -28,27 +29,27 @@
           if (bottomOfWindow) {
             loading.value = true;
             setTimeout(() => {
-              loadPopularMovies();
+              loadPopularMovies(props.selectedCategory);
             }, 500);
           }
         };
       });
 
-      return { popularMovies, genres, loading, getMovieGenres };
+      return { popularMovies, loading };
     },
-  });
+  };
 </script>
 
 <template>
   <div class="container px-4 pt-10 mx-auto">
     <div>
       <h2
-        class="pb-6 text-lg font-semibold tracking-wider uppercase text-myyellow"
+        class="pb-6 text-lg font-semibold tracking-wider uppercase  text-myyellow"
       >
-        All Movies
+        Movies
       </h2>
       <div
-        class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+        class="grid grid-cols-1 gap-8  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
       >
         <div
           class="mt-3"
@@ -57,7 +58,7 @@
         >
           <MovieCard
             :movie="popularMovie"
-            :genres="getMovieGenres(genres, popularMovie.genre_ids)"
+            :genres="popularMovie.genres.toString()"
           />
         </div>
       </div>
@@ -65,3 +66,6 @@
     <div v-if="loading"><loading-bar /></div>
   </div>
 </template>
+
+<style>
+</style>

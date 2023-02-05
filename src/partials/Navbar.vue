@@ -95,7 +95,7 @@
             v-model="search"
             type="text"
             class="w-64 px-4 py-3 pl-12 text-sm text-gray-200 transition duration-200 ease-in-out bg-gray-600 rounded-full focus:outline-none focus:shadow-outline focus:bg-gray-700 hover:bg-gray-700"
-            placeholder="Search ( Tap Ctrl+Space )"
+            placeholder="Search"
             @focus="showDropdown"
             autofocus
           />
