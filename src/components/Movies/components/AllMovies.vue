@@ -1,5 +1,5 @@
 <script>
-  import getPopularMovies from "../composables/getPopularMovies";
+  import getMovies from "../composables/getMovies";
   import MovieCard from "../../MovieCard.vue";
   import {onBeforeMount, onMounted, watchEffect} from "vue";
   import LoadingBar from "../../LoadingBar.vue";
@@ -11,14 +11,14 @@
       LoadingBar,
     },
     setup(props) {
-      let { popularMovies, loading, loadPopularMovies } = getPopularMovies();
+      let { movies, loading, loadMovies } = getMovies();
 
       onBeforeMount(() => {
-        loadPopularMovies(false, props.selectedCategory);
+        loadMovies(false, props.selectedCategory);
       });
 
       watchEffect(() => {
-        loadPopularMovies(true, props.selectedCategory);
+        loadMovies(true, props.selectedCategory);
       });
 
       onMounted(() => {
@@ -29,13 +29,13 @@
           if (bottomOfWindow) {
             loading.value = true;
             setTimeout(() => {
-              loadPopularMovies(false, props.selectedCategory);
+              loadMovies(false, props.selectedCategory);
             }, 500);
           }
         };
       });
 
-      return { popularMovies, loading };
+      return { movies, loading };
     },
   };
 </script>
@@ -53,7 +53,7 @@
       >
         <div
           class="mt-3"
-          v-for="popularMovie in popularMovies"
+          v-for="popularMovie in movies"
           :key="popularMovie.id"
         >
           <MovieCard

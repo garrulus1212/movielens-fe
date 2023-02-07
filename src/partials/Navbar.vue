@@ -82,6 +82,15 @@
         <li class="mt-3 md:ml-16 md:mt-0">
           <router-link :to="{ name: 'MoviesIndex' }">Movies</router-link>
         </li>
+        <li class="mt-3 md:ml-16 md:mt-0">
+          <router-link :to="{ name: 'BestMovies' }">Best Movies</router-link>
+        </li>
+        <li class="mt-3 md:ml-16 md:mt-0">
+          <router-link :to="{ name: 'Rating' }">Rating</router-link>
+        </li>
+        <li class="mt-3 md:ml-16 md:mt-0">
+          <router-link :to="{ name: 'Users', params: { id: 3 }}">User 3</router-link>
+        </li>
       </ul>
       <div class="flex flex-col items-center md:flex-row">
         <div

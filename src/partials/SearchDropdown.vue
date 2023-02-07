@@ -39,7 +39,7 @@
             my_key="poster_path"
             size="w45"
           />
-          <span class="ml-4">{{ result["title"] }}</span>
+          <span class="ml-4">{{ result["name"] }}</span>
         </router-link>
       </li>
     </ul>
